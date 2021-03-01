@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+#service account json for firebase
+/utils/serviceAccountKey.json
+
 # testing
 /coverage
 

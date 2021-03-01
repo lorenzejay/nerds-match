@@ -1,34 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## This is a simple Next.js with firebase db and auth starting template
 
-## Getting Started
+Built with
 
-First, run the development server:
+- firebase
+- next.js
+- tailwind csss
+- user auth is handled with the context api
+- google and email/password providers
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+steps for starting
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. run npm install
+2. Create a .env.local file and add your firebase keys in there
+3. Create firebase app, enable authorization and firestore.
+4. Be sure to enable the auth providers you want in authorization in signInMethods in the authorization section.
+5. in firestore, I faced issues with adding users into firestore at first but learned there was things to do with the rules. So what I did was go to cloud firestore tab, rules and change the allow read to - allow read, write: if request.auth != null;
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## utils
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+in firebase.js
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- we get the dependencies from firebase and import the firebase config. It is recommended for production to put each config item inside a .env file and called to prevent people from seeing your sensitive keys.
+- initialize firebase app
+- we will export out the things we need such as auth, db, now, storage, or any provider (google is the provider I used but is easy to call any provider starting with new firebase.auth(--provider name---)
 
-## Learn More
+## created a hooks folder and added useAuth.js
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- creates our context api which will be used to wrap our entire app so it has access to the user instance.
+- You can use Redux or any other state manager you want, but for simplicity sake we are using context api.
+- wrote login, signUp, createUser (this stores the user inside firestore, so if you want your users to have more than just userId and email associated with the user, you can also include that.), handleAuthStateChanged for when refreshing or leaving the page the user instance remainds without having to login over and over again from every signUp.
