@@ -11,6 +11,7 @@ const SignIn = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const handleLogin = (e) => {
     e.preventDefault();
     return signIn(email, password).then(() => {
@@ -19,10 +20,10 @@ const SignIn = () => {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user !== null) {
       router.push("/dashboard");
     }
-  }, [auth]);
+  }, [user]);
   return (
     <Layout>
       <PaddingWrapper className="w-full flex items-center justify-center">
