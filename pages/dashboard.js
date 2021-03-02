@@ -5,7 +5,9 @@ import { useAuth } from "../hooks/useAuth";
 const Dashboard = () => {
   const auth = useAuth();
   const { user } = auth;
-  console.log(user);
+  //   console.log(user.email);
+  //   console.log(user.displayName);
+  //   console.log(user.uid);
 
   return (
     <Layout>
