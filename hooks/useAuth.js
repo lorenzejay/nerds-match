@@ -19,18 +19,32 @@ const useAuthProvider = () => {
   const [user, setUser] = useState(null);
 
   //stores additional info about the user based on what we pass - email, name, birthday, etc
-  const createUser = (user) => {
+  const createUser = ({ uid, email, name }) => {
+    if (!uid) return;
+    //check if there was already a doc inside user collection
     return db
       .collection("users")
-      .doc(user.uid)
-      .set(user)
+      .doc(uid)
+      .set({ uid, email, name })
       .then(() => {
-        setUser(user);
+        setUser({ uid, email, name });
       })
       .catch((err) => {
         return { err };
       });
   };
+
+  const loginWithGoogle = async () => {
+    try {
+      const { user } = await auth.signInWithPopup(googleProvider);
+      if (user) {
+        await createUser({ uid: user.uid, email: user.email, name: user.displayName });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //creates user in authentication in firestore
   const signUp = ({ name, email, password }) => {
     return auth
@@ -82,11 +96,11 @@ const useAuthProvider = () => {
     }
   };
 
-  useEffect(() => {
-    const unsub = auth.onAuthStateChanged(handleAuthStateChanged);
+  // useEffect(() => {
+  //   const unsub = auth.onAuthStateChanged(handleAuthStateChanged);
 
-    return () => unsub();
-  }, []);
+  //   return () => unsub();
+  // }, []);
 
   useEffect(() => {
     if (user?.uid) {
@@ -97,19 +111,6 @@ const useAuthProvider = () => {
       return () => unsubscribe();
     }
   }, []);
-
-  const loginWithGoogle = () => {
-    return auth
-      .signInWithPopup(googleProvider)
-      .then((res) => {
-        const credentials = credentials.accessToken;
-        const user = res.user;
-        setUser(user);
-      })
-      .catch((err) => {
-        return { err };
-      });
-  };
 
   const logout = () => {
     return auth
