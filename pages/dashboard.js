@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import Layout from "../components/layout";
 import PaddingWrapper from "../components/paddingWrapper";
 import { useAuth } from "../hooks/useAuth";
@@ -5,9 +6,6 @@ import { useAuth } from "../hooks/useAuth";
 const Dashboard = () => {
   const auth = useAuth();
   const { user } = auth;
-  //   console.log(user.email);
-  //   console.log(user.displayName);
-  //   console.log(user.uid);
 
   return (
     <Layout>

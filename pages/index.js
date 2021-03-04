@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Layout from "../components/layout";
 export default function Home() {
   return (
     <div>
@@ -6,9 +7,11 @@ export default function Home() {
         <title>Next and Firebase</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1>This is the home page</h1>
-      </main>
+      <Layout>
+        <main>
+          <h1 className="text-3xl">This is the home page</h1>
+        </main>
+      </Layout>
     </div>
   );
 }

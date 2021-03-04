@@ -17,6 +17,7 @@ export const useAuth = () => {
 
 const useAuthProvider = () => {
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
 
   //stores additional info about the user based on what we pass - email, name, birthday, etc
   const createUser = ({ uid, email, name }) => {
@@ -30,6 +31,7 @@ const useAuthProvider = () => {
         setUser({ uid, email, name });
       })
       .catch((err) => {
+        setError(err);
         return { err };
       });
   };
@@ -39,8 +41,10 @@ const useAuthProvider = () => {
       const { user } = await auth.signInWithPopup(googleProvider);
       if (user) {
         await createUser({ uid: user.uid, email: user.email, name: user.displayName });
+        setError(null);
       }
     } catch (error) {
+      setError(err);
       console.log(error);
     }
   };
@@ -52,10 +56,11 @@ const useAuthProvider = () => {
       .then((res) => {
         auth.currentUser.sendEmailVerification();
         //brings data passed into firestore db
+        setError(null);
         return createUser({ uid: res.user.uid, email, name });
       })
       .catch((err) => {
-        setCreateAccountError(err.message);
+        setError(err);
         return err;
       });
   };
@@ -66,10 +71,12 @@ const useAuthProvider = () => {
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
         setUser(res.user);
+        setError(null);
         getUserAdditionalData(user);
         return res.user;
       })
       .catch((err) => {
+        setError(err);
         return { err };
       });
   };
@@ -96,11 +103,11 @@ const useAuthProvider = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const unsub = auth.onAuthStateChanged(handleAuthStateChanged);
+  useEffect(() => {
+    const unsub = auth.onAuthStateChanged(handleAuthStateChanged);
 
-  //   return () => unsub();
-  // }, []);
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     if (user?.uid) {
@@ -117,11 +124,14 @@ const useAuthProvider = () => {
       .signOut()
       .then(() => {
         setUser(null);
+        setError(null);
       })
       .catch((err) => {
+        setError(err);
         return { err };
       });
   };
 
-  return { user, signUp, signIn, loginWithGoogle, logout };
+  //what our state has access too from useAuth hook
+  return { user, error, signUp, signIn, loginWithGoogle, logout };
 };

@@ -7,8 +7,7 @@ import Layout from "../components/layout";
 const SignUp = () => {
   //gets the signUp function created in useAuth
   const auth = useAuth();
-  const { signUp, user } = auth;
-  console.log(user);
+  const { signUp, user, error } = auth;
 
   useEffect(() => {
     if (user) {
@@ -27,20 +26,26 @@ const SignUp = () => {
   //form success/errors
   const [formError, setFormError] = useState("");
 
-  const handleCreateAccount = (e) => {
+  const handleCreateAccount = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      return signUp({ name, email, password }).then((user) => {
-        setFormError("");
-        router.push("/dashboard");
-      });
+      try {
+        await signUp({ name, email, password });
+        if (error === null) {
+          router.push("/dashboard");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      setFormError("Passwords do not match");
     }
-    setFormError("Passwords do not match");
   };
 
   return (
     <Layout>
       <PaddingWrapper>
+        {error && <p className="text-red-500 text-2xl">{error.message}</p>}
         <form className="flex lg:flex-col w-full" onSubmit={handleCreateAccount}>
           <h1>Sign Up</h1>
           {formError && <p>{formError}</p>}

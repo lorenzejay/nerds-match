@@ -1,22 +1,22 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
 import Layout from "../components/layout";
 import PaddingWrapper from "../components/paddingWrapper";
 import { useAuth } from "../hooks/useAuth";
 
 const SignIn = () => {
   const auth = useAuth();
-  const { signIn, user, loginWithGoogle } = auth;
+  const { user, login, loginWithGoogle } = auth;
 
+  console.log(user);
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    return signIn(email, password).then(() => {
-      router.push("/dashboard");
-    });
+    await dispatch(login(email, password));
   };
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const SignIn = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="border-2 border-opacity-10 border-black outline-none px-5 py-1 mt-3"
           />
-          <button onClick={loginWithGoogle}>Sign in with Google</button>
+          <button onClick={() => dispatch(loginWithGoogle)}>Sign in with Google</button>
           <button type="submit" className="text-white bg-gray-800 mt-3">
             Submit
           </button>
