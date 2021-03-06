@@ -46,7 +46,7 @@ const SignUp = () => {
     <Layout>
       <PaddingWrapper>
         {error && <p className="text-red-500 text-2xl">{error.message}</p>}
-        <form className="flex lg:flex-col w-full" onSubmit={handleCreateAccount}>
+        <form className="flex flex-col w-full" onSubmit={handleCreateAccount}>
           <h1>Sign Up</h1>
           {formError && <p>{formError}</p>}
           {/* {createAccountSuccess && <p>Successfully Created an account</p>}
