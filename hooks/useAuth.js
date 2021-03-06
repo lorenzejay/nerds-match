@@ -26,9 +26,28 @@ const useAuthProvider = () => {
     return db
       .collection("users")
       .doc(uid)
-      .set({ uid, email, name })
+      .set({
+        uid,
+        email,
+        name,
+        profilePic: null,
+        about: null,
+        ocupation: null,
+        projects: [],
+        age: null,
+        work: null,
+        education: null,
+        githubLink: null,
+        twitterLink: null,
+        linkedInLink: null,
+        programmingLanguages: [],
+      })
       .then(() => {
-        setUser({ uid, email, name });
+        setUser({
+          uid,
+          email,
+          name,
+        });
       })
       .catch((err) => {
         setError(err);
@@ -40,10 +59,14 @@ const useAuthProvider = () => {
     try {
       const { user } = await auth.signInWithPopup(googleProvider);
       if (user) {
-        await createUser({ uid: user.uid, email: user.email, name: user.displayName });
+        await createUser({
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName,
+        });
         setError(null);
       }
-    } catch (error) {
+    } catch (err) {
       setError(err);
       console.log(error);
     }
@@ -95,6 +118,36 @@ const useAuthProvider = () => {
       });
   };
 
+  //update the users about
+  const updateAbout = async (about) => {
+    try {
+      //makes sure theres a user
+      if (user === null) return;
+      await db.collection("users").doc(user.uid).update({
+        about,
+      });
+      //should trigger update the things in user once there is update
+      getUserAdditionalData(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //update profilePicture
+  const updateProfilePic = async (file) => {
+    const storageRef = storage.ref();
+    const fileRef = storageRef.child(toSendPP.name);
+    await fileRef.put(file);
+    const fileUrl = await fileRef.getDownloadURL();
+
+    //upload to firestore
+    if (user) {
+      await db.collection("users").doc(user.uid).update({
+        profilePic: fileUrl,
+      });
+    }
+  };
+
   //if we refresh our data still remains without having to store our userid inside localstorage
   const handleAuthStateChanged = (user) => {
     setUser(user);
@@ -133,5 +186,5 @@ const useAuthProvider = () => {
   };
 
   //what our state has access too from useAuth hook
-  return { user, error, signUp, signIn, loginWithGoogle, logout };
+  return { user, error, signUp, signIn, loginWithGoogle, logout, updateAbout, updateProfilePic };
 };
