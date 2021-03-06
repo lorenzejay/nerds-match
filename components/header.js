@@ -9,9 +9,9 @@ const Header = () => {
 
   return (
     <PaddingWrapper>
-      <header className="flex items-center justify-between">
-        <h2>Logo</h2>
-        {user ? (
+      <header className="flex items-center justify-between h-24">
+        <h2 className="font-bold text-2xl">Nerds Match</h2>
+        {!user ? (
           <ul className="flex flex-row justify-around w-72">
             <li>
               <Link href="/signIn">Sign In</Link>
