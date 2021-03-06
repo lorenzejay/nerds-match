@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Next and Firebase</title>
+        <title>Nerds Connect</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
