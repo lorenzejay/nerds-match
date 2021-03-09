@@ -1,9 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import "firebase/analytics";
+// import "firebase/analytics";
 
 var firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,7 +17,7 @@ var firebaseConfig = {
 // Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+  // firebase.analytics();
 }
 const app = firebase.app();
 const auth = firebase.auth();
