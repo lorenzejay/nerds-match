@@ -128,6 +128,7 @@ const useAuthProvider = () => {
       });
       //should trigger update the things in user once there is update
       getUserAdditionalData(user);
+      window.alert("Successfully Updated Your About Section.");
     } catch (error) {
       console.log(error);
     }
@@ -146,6 +147,13 @@ const useAuthProvider = () => {
         profilePic: fileUrl,
       });
     }
+  };
+
+  //sends in an array of three languages
+  const updateTopThreeLanguages = async (programmingLanguages) => {
+    await db.collection("users").doc(user.uid).update({
+      programmingLanguages,
+    });
   };
 
   //if we refresh our data still remains without having to store our userid inside localstorage
@@ -186,5 +194,15 @@ const useAuthProvider = () => {
   };
 
   //what our state has access too from useAuth hook
-  return { user, error, signUp, signIn, loginWithGoogle, logout, updateAbout, updateProfilePic };
+  return {
+    user,
+    error,
+    signUp,
+    signIn,
+    loginWithGoogle,
+    logout,
+    updateAbout,
+    updateProfilePic,
+    updateTopThreeLanguages,
+  };
 };
