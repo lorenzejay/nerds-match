@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import Layout from "../components/layout";
 import PaddingWrapper from "../components/paddingWrapper";
 import { useAuth } from "../hooks/useAuth";
