@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import PaddingWrapper from "../components/paddingWrapper";
 import { useAuth } from "../hooks/useAuth";
-import { DiPhp, DiJavascript1, DiPython, DiSwift } from "react-icons/di";
+import { DiPhp, DiJavascript1, DiPython, DiSwift, DiJava, DiReact } from "react-icons/di";
 import { FaDumbbell } from "react-icons/fa";
 import { IoIosSchool } from "react-icons/io";
 import { RiShoppingBagFill } from "react-icons/ri";
@@ -25,8 +25,18 @@ const Dashboard = () => {
   const [username, setUsername] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const [aboutMe, setAboutMe] = useState("");
-  const [ocupation, setOccupation] = useState("");
-  const [knownLanguages, setKnownLanguages] = useState([]);
+  const [occupation, setOccupation] = useState("");
+  const [education, setEducation] = useState("");
+  const [hobbies, setHobbies] = useState("");
+  const [location, setLocation] = useState("");
+  const [portfolioSite, setPortfolioSite] = useState("");
+
+  //social links
+  const [githubLink, setGithubLink] = useState("");
+  const [twitterLink, setTwitterLink] = useState("");
+  const [linkedInLink, setLinkedInLink] = useState("");
+
+  const [top3Languages, setTop3Languages] = useState([]);
   const [links, setLinks] = useState({ twitter: "", github: "", linkedIn: "" });
 
   //if there is a username populate our state with our user profile
@@ -35,8 +45,18 @@ const Dashboard = () => {
       setUsername(user.name);
       setAboutMe(user.about);
       setProfilePic(user.profilePic);
+      setTop3Languages(user.programmingLanguages);
+      setOccupation(user.occupation);
+      setEducation(user.education);
+      setHobbies(user.hobbies);
+      setLocation(user.location);
+      setPortfolioSite(user.portfolioSite);
+      setGithubLink(user.githubLink);
+      setTwitterLink(user.twitterLink);
+      setLinkedInLink(user.linkedInLink);
     }
   }, [user]);
+
   useEffect(() => {
     if (user === null) {
       router.push("/signIn");
@@ -77,47 +97,75 @@ const Dashboard = () => {
             </section>
 
             <section className="text-2xl flex my-5">
-              <DiPhp size={64} />
+              {top3Languages.map((lang, i) => {
+                return (
+                  <div key={i} className="text-2xl">
+                    {lang.language === "JavaScript" && <DiJavascript1 size={64} />}
+                    {lang.language === "Java" && <DiJava size={64} />}
+                    {lang.language === "React" && <DiReact size={64} />}
+                    {lang.language === "Python" && <DiPython size={64} />}
+                    {lang.language === "Php" && <DiPhp size={64} />}
+                  </div>
+                );
+              })}
+
+              {/* <DiPhp size={64} />
               <DiJavascript1 size={64} />
-              <DiPython size={64} />
+              <DiPython size={64} /> */}
             </section>
 
             <ul className="rounded-xl shadow-xl px-2  py-8 w-full mb-20 text-xl">
-              <li className="border-t-2 border-opacity-10 p-5 flex items-center">
-                <RiShoppingBagFill className="mr-4" /> Full Stack Web Developer
-              </li>
-              <li className="border-t-2 border-opacity-10 p-5 flex items-center">
-                <IoIosSchool className="mr-4" /> California State University: Long Beach
-              </li>
-              <li className="border-t-2 border-opacity-10 p-5 flex items-center">
-                <FaDumbbell className="mr-4" /> Cooking, Biking, Singing
-              </li>
-              <li className="border-t-2 border-opacity-10 p-5 flex items-center">
-                <AiOutlineFundProjectionScreen className="mr-4" />
-                <a href="https://github.com/">Super Cool Project</a>
-              </li>
-              <li className="border-t-2 border-opacity-10 p-5 flex items-center">
-                <AiFillHome className="mr-4" />
-                Los Angeles
-              </li>
+              {occupation && (
+                <li className="border-t-2 border-opacity-10 p-5 flex items-center">
+                  <RiShoppingBagFill className="mr-4" /> {occupation}
+                </li>
+              )}
+              {education && (
+                <li className="border-t-2 border-opacity-10 p-5 flex items-center">
+                  <IoIosSchool className="mr-4" /> {education}
+                </li>
+              )}
+              {user.hobbies !== null && (
+                <li className="border-t-2 border-opacity-10 p-5 flex items-center">
+                  <FaDumbbell className="mr-4" /> {hobbies}
+                </li>
+              )}
+              {portfolioSite !== "" && (
+                <li className="border-t-2 border-opacity-10 p-5 flex items-center">
+                  <AiOutlineFundProjectionScreen className="mr-4" />
+                  <a href={portfolioSite}>{portfolioSite}</a>
+                </li>
+              )}
+              {location !== "" && (
+                <li className="border-t-2 border-opacity-10 p-5 flex items-center">
+                  <AiFillHome className="mr-4" />
+                  {location}
+                </li>
+              )}
             </ul>
 
             <ul className="flex justify-around w-full">
-              <li>
-                <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
-                  <AiOutlineGithub size={44} />
-                </a>
-              </li>
-              <li>
-                <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">
-                  <AiOutlineLinkedin size={44} />
-                </a>
-              </li>
-              <li>
-                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
-                  <AiOutlineTwitter size={44} />
-                </a>
-              </li>
+              {githubLink && (
+                <li>
+                  <a href={githubLink} target="_blank" rel="noopener noreferrer">
+                    <AiOutlineGithub size={44} />
+                  </a>
+                </li>
+              )}
+              {linkedInLink && (
+                <li>
+                  <a href={linkedInLink} target="_blank" rel="noopener noreferrer">
+                    <AiOutlineLinkedin size={44} />
+                  </a>
+                </li>
+              )}
+              {twitterLink && (
+                <li>
+                  <a href={twitterLink} target="_blank" rel="noopener noreferrer">
+                    <AiOutlineTwitter size={44} />
+                  </a>
+                </li>
+              )}
             </ul>
           </main>
         ) : (
