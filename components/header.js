@@ -10,7 +10,9 @@ const Header = () => {
   return (
     <PaddingWrapper>
       <header className="flex items-center justify-between h-24">
-        <h2 className="font-bold text-2xl">Nerds Match</h2>
+        <Link href="/">
+          <a className="font-bold text-2xl">Nerds Match</a>
+        </Link>
         {!user ? (
           <ul className="flex flex-row justify-around w-72">
             <li>
