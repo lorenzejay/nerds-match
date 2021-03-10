@@ -32,11 +32,13 @@ const useAuthProvider = () => {
         name,
         profilePic: null,
         about: null,
-        ocupation: null,
+        occupation: null,
         projects: [],
         age: null,
-        work: null,
+        hobbies: null,
         education: null,
+        location: "",
+        portfolioSite: "",
         githubLink: null,
         twitterLink: null,
         linkedInLink: null,
@@ -154,6 +156,56 @@ const useAuthProvider = () => {
     await db.collection("users").doc(user.uid).update({
       programmingLanguages,
     });
+    getUserAdditionalData(user);
+  };
+
+  //updates occupation
+  const updateOccupation = async (occupation) => {
+    await db.collection("users").doc(user.uid).update({
+      occupation,
+    });
+  };
+  //updates education
+  const updateEducation = async (education) => {
+    await db.collection("users").doc(user.uid).update({
+      education,
+    });
+  };
+  //updates hobby
+  const updateHobbies = async (hobbies) => {
+    await db.collection("users").doc(user.uid).update({
+      hobbies,
+    });
+  };
+  //updates location
+  const updateLocation = async (location) => {
+    await db.collection("users").doc(user.uid).update({
+      location,
+    });
+  };
+  //updates location
+  const updatePortfolioSite = async (portfolioSite) => {
+    await db.collection("users").doc(user.uid).update({
+      portfolioSite,
+    });
+  };
+  //updates location
+  const updateGithubLink = async (githubLink) => {
+    await db.collection("users").doc(user.uid).update({
+      githubLink,
+    });
+  };
+  //updates location
+  const updateTwitterLink = async (twitterLink) => {
+    await db.collection("users").doc(user.uid).update({
+      twitterLink,
+    });
+  };
+  //updates
+  const updateLinkedInLink = async (linkedInLink) => {
+    await db.collection("users").doc(user.uid).update({
+      linkedInLink,
+    });
   };
 
   //if we refresh our data still remains without having to store our userid inside localstorage
@@ -204,5 +256,13 @@ const useAuthProvider = () => {
     updateAbout,
     updateProfilePic,
     updateTopThreeLanguages,
+    updateOccupation,
+    updateEducation,
+    updateHobbies,
+    updateLocation,
+    updatePortfolioSite,
+    updateGithubLink,
+    updateTwitterLink,
+    updateLinkedInLink,
   };
 };
